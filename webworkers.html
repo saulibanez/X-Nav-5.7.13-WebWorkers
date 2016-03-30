@@ -2,32 +2,27 @@
 <html>
  <head>
   <title>Ejercicio con WebWorkers</title>
+    <script>
+    function buscarPrimos() {
+      var num = document.getElementById("num").value;
+      var worker = new Worker('webworkers.js');
+      worker.postMessage(num);
 
-  <script>
-function buscarPrimos() {
-  var n = 1;
-  primelist = "";
-  search: while (n<parseInt(document.getElementById("formulario").input.value)) {
-    n += 1;
-    for (var i = 2; i <= Math.sqrt(n); i += 1)
-      if (n % i == 0)
-        continue search;
-    // found a prime!
-    primelist += " " + n;
-    document.getElementById('result').innerHTML = primelist;
-  }
-}
+      worker.addEventListener("message", function(e){
+        var primelist=e.data;
+        console.log(primelist);
+        document.getElementById('result').innerHTML = primelist;
+      });
+    }
   </script>
 
-
  </head>
+
  <body>
-  <form id="formulario" action="" method="POST">
-  Numero: <input type="text" name="input">
-  </form>
+
+  <form id="formulario" action="" method="POST"> Numero: <input type="text" id= "num" name="input"></form>
   <button onclick="buscarPrimos()">Buscar primos</button>
   <p>Los numeros primos hasta el numero dado son: <span id="result"></span></p>
-
 
  </body>
 </html>
